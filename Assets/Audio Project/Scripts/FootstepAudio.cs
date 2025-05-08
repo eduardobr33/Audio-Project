@@ -49,13 +49,17 @@ public class FootstepAudio : MonoBehaviour
         }
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    private void OnTriggerEnter(Collider other)
     {
-        if (hit.collider.CompareTag("Grass"))
+        if (other.CompareTag("Grass"))
         {
             currentSurface = "Grass";
         }
-        else
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Grass"))
         {
             currentSurface = "Concrete";
         }
