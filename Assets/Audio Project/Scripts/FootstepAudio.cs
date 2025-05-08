@@ -3,10 +3,13 @@ using UnityEngine;
 public class FootstepAudio : MonoBehaviour
 {
     public AudioSource audioSource;
-    public AudioClip[] footstepClips;
-    public float stepDelay = 0.5f;
+    public AudioClip[] concreteClips;
+    public AudioClip[] grassClips;
+    public float stepDelay = 1.5f;
     private float stepTimer;
     public CharacterController controller;
+
+    private string currentSurface = "Concrete";
 
     void Update()
     {
@@ -27,11 +30,34 @@ public class FootstepAudio : MonoBehaviour
 
     void PlayFootstep()
     {
-        if (footstepClips.Length > 0)
+        AudioClip[] selectedClips;
+
+        switch (currentSurface)
         {
-            int index = Random.Range(0, footstepClips.Length);
-            audioSource.clip = footstepClips[index];
-            audioSource.Play();
+            case "Grass":
+                selectedClips = grassClips;
+                break;
+            default:
+                selectedClips = concreteClips;
+                break;
+        }
+
+        if (selectedClips.Length > 0)
+        {
+            int index = Random.Range(0, selectedClips.Length);
+            audioSource.PlayOneShot(selectedClips[index]);
+        }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Grass"))
+        {
+            currentSurface = "Grass";
+        }
+        else
+        {
+            currentSurface = "Concrete";
         }
     }
 }
