@@ -30,6 +30,10 @@ namespace SunTemple
 
 		private bool scriptIsEnabled = true;
 
+        public AudioClip doorOpenClip;
+        public AudioClip doorCloseClip;
+        public AudioSource audioSource;
+
 
 
         void Start(){
@@ -164,24 +168,26 @@ namespace SunTemple
 
         void Open()
         {
-			DoorCollider.enabled = false;
+            DoorCollider.enabled = false;
             DoorClosed = false;
             StartAngle = transform.localEulerAngles.y;
-            EndAngle =  StartRotation.y + OpenRotationAmount;
+            EndAngle = StartRotation.y + OpenRotationAmount;
             CurrentLerpTime = 0;
             Rotating = true;
+
+            audioSource.PlayOneShot(doorOpenClip);
         }
-
-
 
         void Close()
         {
-			DoorCollider.enabled = false;
+            DoorCollider.enabled = false;
             DoorClosed = true;
             StartAngle = transform.localEulerAngles.y;
             EndAngle = transform.localEulerAngles.y - OpenRotationAmount;
             CurrentLerpTime = 0;
             Rotating = true;
+
+            audioSource.PlayOneShot(doorCloseClip);
         }
 
     }
